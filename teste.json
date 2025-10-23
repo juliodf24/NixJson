@@ -1,5 +1,5 @@
 {
     "Pergunta": "que dia é hoje",
-    "alternativas": "teste",
+    "alternativas": ["teste", "teste"],
     "resposta": "0"
 }

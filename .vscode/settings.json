@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "ccalango.h": "c"
+        "ccalango.h": "c",
+        "dicionario.h": "c"
     }
 }
