@@ -84,9 +84,13 @@ void limparPalavra(char** palavra) {
 
 void parseJson(DICIONARIO* dicionario, char* stringJson){
     int tamanhoStringJson = removerEspacosEmBrancoIgnorandoConteudoAspas(stringJson);
+    int qtdChaves = 0;
     int qtdAspas = 2;
     int qtdColchete = 2;
-    int gravarValor = 0;
+    int qtdColcheteAberto = 0;
+    int qtdColcheteFechado = 0;
+    int gravandoValor = 0;
+    int gravando = 0;
     int modo = 0;
     char* chave = NULL;
     char* valor = NULL;
@@ -97,62 +101,71 @@ void parseJson(DICIONARIO* dicionario, char* stringJson){
     for(int i = 0; i < tamanhoStringJson; i++){
         int caractere = stringJson[i];
         // printf("caractere observado: %c\n", caractere);
-        switch(caractere)
-        {
-            case '"':
-                qtdAspas++;
-                break;
-            case '[':
-                qtdColchete++;
-                goto gravarCaractere;
-                break;
-            case ']':
-                qtdColchete++;
-                goto gravarCaractere;
-                break;
-            case ':':
-                gravarValor = 1;
+        
+        if(caractere == '{') {
+            qtdChaves++;
+            if(qtdChaves == 1){
+                continue;
+            }
+        }
+        if(caractere == '}') {
 
-                if(i+1 < tamanhoStringJson){
-                    // printf("\n\n %d  casa, valor: %c", i+1, stringJson[i+1]);
-                    if(stringJson[i+1] == '"') modo = 0;
-                    if(stringJson[i+1] == '[') {
-                        printf("trocou modo para 1");
-                        modo = 1;
-                    }
-                }
-
-                break;
-            case ',':
-                if(modo == 0){
-                    gravarValor = 0;
-                    adicionarItem(dicionario, chave, valor);
-                    limparPalavra(&chave);
-                    limparPalavra(&valor);
-                } else {
-                    goto gravarCaractere;
-                }
-                break;
-            case '}':
+            if(stringJson[i+1] == '\0' || stringJson[i+1] == '}'){
                 adicionarItem(dicionario, chave, valor);
                 limparPalavra(&chave);
                 limparPalavra(&valor);
-                break;
-            gravarCaractere:
-            default:
-                // if(modo == 0) {
-                //     if(oConjuntoEstaFechado(qtdAspas)) break;
-                // }
-                if(gravarValor == 0){
-                    adicionarCaractereNaPalavra(caractere, &chave);
-                    break;
-                }
-                if(gravarValor == 1){
-                    adicionarCaractereNaPalavra(caractere, &valor);
-                    break;
-                }
-                break;
+                continue;
+            }
+        };
+        if(caractere == '['){
+            qtdColcheteAberto++;
+            if(!gravando){
+                gravando = 1;
+            }
+            qtdColchete++;
         }
+        if(caractere == ']'){
+            qtdColcheteFechado++;
+            qtdColchete++;
+        }
+        if(caractere == '"'){
+            if(gravando){
+                if(qtdColcheteAberto == qtdColcheteFechado){
+                    gravando = 0;
+                    continue;
+                }
+            } else {
+                gravando = 1;
+                continue;
+            }
+        }
+        if(caractere == ':'){
+            if(!gravandoValor){
+                gravandoValor = 1;
+            }
+        }
+        if(caractere == ','){
+            if(gravandoValor){
+                 if(qtdColcheteAberto == qtdColcheteFechado){
+                    gravandoValor = 0;
+                    gravando = 0;
+                    adicionarItem(dicionario, chave, valor);
+                    limparPalavra(&chave);
+                    limparPalavra(&valor);
+                }
+            } else {
+                continue;
+            }
+        }
+        if(gravando){
+            if(gravandoValor){
+                adicionarCaractereNaPalavra(caractere, &valor);
+            } else {
+                adicionarCaractereNaPalavra(caractere, &chave);
+            }
+        }
+
+       
     }
 
 }
@@ -172,8 +185,24 @@ int main() {
     parseJson(dicionario, stringjson);
 
     for(int i = 0; i< dicionario->qtdItens;i++){
-        printf("Chave: %s\n valor: %s\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
+        printf("Chave: - %s - \n valor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
     }
+
+    DICIONARIO* dicionario2 = malloc(sizeof(DICIONARIO));
+    if (!dicionario2) {
+        perror("Erro ao alocar memória para o dicionário");
+        exit(1);
+    }
+    dicionario2->qtdItens = 0;
+    dicionario2->item = NULL; 
+
+
+    parseJson(dicionario2, dicionario->item[3].valor);
+
+    for(int i = 0; i< dicionario2->qtdItens;i++){
+        printf("Chave2: - %s - \n valor2: - %s -\n\n", dicionario2->item[i].chave, dicionario2->item[i].valor );
+    }
+    
 
     return 0;
 }
