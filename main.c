@@ -58,12 +58,12 @@ int removerEspacosEmBrancoIgnorandoConteudoAspas(char *str) {
     return tamanhoString;
 }
 
-int ehJson(char* json, int tamanhoJson){
-    if(json[0] == '{' && json[tamanhoJson -1] == '}'){
-        return 1; // verdadeiro
-    }
-    return 0; // falso
-}
+// int ehJson(char* json, int tamanhoJson){
+//     if(json[0] == '{' && json[tamanhoJson -1] == '}'){
+//         return 1; // verdadeiro
+//     }
+//     return 0; // falso
+// }
 
 
 void adicionarCaractereNaPalavra(char caractere, char** palavra) {
@@ -80,6 +80,77 @@ void limparPalavra(char** palavra) {
     (*palavra)[0] = '\0';
 }
 
+DICIONARIO* ObterItemArray(char* stringJson, int numeroItem){
+    DICIONARIO* dicionario = malloc(sizeof(DICIONARIO));
+    if (!dicionario) {
+        perror("Erro ao alocar memória para o dicionário");
+        exit(1);
+    }
+    dicionario->qtdItens = 0;
+    dicionario->item = NULL; 
+    char* chave = NULL;
+    char* valor = NULL;
+    limparPalavra(&chave);
+    limparPalavra(&valor);
+    int gravandoValor = 0;
+    int gravando = 0;
+    int contador = 48;
+    int qtdItens = 0;
+
+    int tamanhoString = strlen(stringJson);
+    printf("tamanho string: %d\n", tamanhoString);
+
+    for(int i = 0; i < tamanhoString; i++){
+        char caractere = stringJson[i];
+
+        if(caractere == '{'){
+            if( (i==0 || stringJson[i-1] == '[' || (stringJson[i-1] == ',' && stringJson[i-2] == '}')) && gravandoValor == 0){
+                gravando = 1;
+                contador++;
+                adicionarCaractereNaPalavra(contador, &chave);
+                gravandoValor = 1;
+            }
+        }
+        if(caractere == ','){
+            if(stringJson[i-1] == '}' && stringJson[i+1] == '{'){
+                gravando = 0;
+                qtdItens++;
+                adicionarItem(dicionario, chave, valor);
+                limparPalavra(&chave);
+                limparPalavra(&valor);
+                gravandoValor = 0;
+                continue;
+            }
+        }
+        if(caractere == '}'){
+            if(stringJson[i+1] == ']'){
+                gravando = 0;
+                qtdItens++;
+                adicionarCaractereNaPalavra(caractere, &valor);
+                adicionarItem(dicionario, chave, valor);
+                limparPalavra(&chave);
+                limparPalavra(&valor);
+                gravandoValor = 0;
+                contador++;
+                continue;
+            }
+        }
+
+        if(gravando){
+            if(gravandoValor){
+                adicionarCaractereNaPalavra(caractere, &valor);
+            }
+        }
+
+
+    }
+    dicionario->qtdItens = qtdItens;
+    printf("qtd itens: %d\n\n", dicionario->qtdItens);
+    for(int i = 0; i < dicionario->qtdItens ; i++){
+        printf("Chave: - %s - \nvalor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
+    }
+
+}
 
 
 void parseJson(DICIONARIO* dicionario, char* stringJson){
@@ -168,7 +239,10 @@ void parseJson(DICIONARIO* dicionario, char* stringJson){
        
     }
 
+
 }
+
+
 
 int main() {
     DICIONARIO* dicionario = malloc(sizeof(DICIONARIO));
@@ -184,25 +258,11 @@ int main() {
     printf("string Json: %s\n\n", stringjson);
     parseJson(dicionario, stringjson);
 
-    for(int i = 0; i< dicionario->qtdItens;i++){
-        printf("Chave: - %s - \n valor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
-    }
+    // for(int i = 0; i< dicionario->qtdItens;i++){
+    //     printf("Chave: - %s - \n valor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
+    // }
 
-    DICIONARIO* dicionario2 = malloc(sizeof(DICIONARIO));
-    if (!dicionario2) {
-        perror("Erro ao alocar memória para o dicionário");
-        exit(1);
-    }
-    dicionario2->qtdItens = 0;
-    dicionario2->item = NULL; 
-
-
-    parseJson(dicionario2, dicionario->item[3].valor);
-
-    for(int i = 0; i< dicionario2->qtdItens;i++){
-        printf("Chave2: - %s - \n valor2: - %s -\n\n", dicionario2->item[i].chave, dicionario2->item[i].valor );
-    }
-    
+    ObterItemArray(dicionario->item[1].valor, 0);
 
     return 0;
 }

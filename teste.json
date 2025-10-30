@@ -1,12 +1,36 @@
 {
-    "Pergunta": "que dia é hoje",
-    "alternativas": ["teste", "teste"],
-    "resposta": "0",
-    "perguntas": [
+  "nivel": 1,
+      "perguntas": [
         {
           "enunciado": "Qual é o país conhecido como o berço do futebol? 💂🏻",
           "alternativa": ["Brasil", "Inglaterra", "Alemanha", "Espanha"],
           "resposta": 1,
           "dica": "O esporte surgiu no século XIX em uma ilha europeia."
-        }]
+        },
+        {
+          "enunciado": "Quantos jogadores um time de futebol tem em campo 🏃🏼‍♂️?",
+          "alternativa": ["10", "11", "12", "9"],
+          "resposta": 1,
+          "dica": "Inclui o goleiro nessa contagem."
+        },
+        {
+          "enunciado": "Quem é conhecido como 'Rei do Futebol 👑'?",
+          "alternativa": ["Pelé", "Maradona", "Cristiano Ronaldo", "Messi"],
+          "resposta": 0,
+          "dica": "É brasileiro e tricampeão mundial."
+        },
+        {
+          "enunciado": "Qual jogador é famoso por usar a camisa 10 na seleção argentina e no Barcelona? 👽",
+          "alternativa": ["Riquelme", "Messi", "Di María", "Batistuta"],
+          "resposta": 1,
+          "dica": "É um dos maiores do Barcelona, conhecido pelo apelido de ET."
+        },
+        {
+          "enunciado": "Qual seleção venceu a Copa do Mundo de 2002? 🏆",
+          "alternativa": ["Alemanha", "Brasil", "França", "Argentina"],
+          "resposta": 1,
+          "dica": "Foi o quinto título 5️⃣ da seleção."
+        }
+        
+      ]
 }
