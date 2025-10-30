@@ -80,7 +80,7 @@ void limparPalavra(char** palavra) {
     (*palavra)[0] = '\0';
 }
 
-DICIONARIO* ObterItemArray(char* stringJson, int numeroItem){
+char* ObterItemArray(char* stringJson, int numeroItem){
     DICIONARIO* dicionario = malloc(sizeof(DICIONARIO));
     if (!dicionario) {
         perror("Erro ao alocar memória para o dicionário");
@@ -145,9 +145,14 @@ DICIONARIO* ObterItemArray(char* stringJson, int numeroItem){
 
     }
     dicionario->qtdItens = qtdItens;
-    printf("qtd itens: %d\n\n", dicionario->qtdItens);
-    for(int i = 0; i < dicionario->qtdItens ; i++){
-        printf("Chave: - %s - \nvalor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
+    // printf("qtd itens: %d\n\n", dicionario->qtdItens);
+    // for(int i = 0; i < dicionario->qtdItens ; i++){
+    //     printf("Chave: - %s - \nvalor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
+    // }
+    if(numeroItem < dicionario->qtdItens){
+        return dicionario->item[numeroItem].valor;
+    } else {
+        return NULL;
     }
 
 }
@@ -258,11 +263,29 @@ int main() {
     printf("string Json: %s\n\n", stringjson);
     parseJson(dicionario, stringjson);
 
-    // for(int i = 0; i< dicionario->qtdItens;i++){
-    //     printf("Chave: - %s - \n valor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
-    // }
+    for(int i = 0; i< dicionario->qtdItens;i++){
+        printf("Chave: - %s - \n valor: - %s -\n\n", dicionario->item[i].chave, dicionario->item[i].valor );
+    }
 
-    ObterItemArray(dicionario->item[1].valor, 0);
+    char* teste = ObterItemArray(dicionario->item[1].valor, 1);
+    printf("\nArray escolhida: %s\n\n", teste);
+
+
+
+    DICIONARIO* dicionario2 = malloc(sizeof(DICIONARIO));
+    if (!dicionario2) {
+        perror("Erro ao alocar memória para o dicionário");
+        exit(1);
+    }
+    dicionario2->qtdItens = 0;
+    dicionario2->item = NULL; 
+        printf("string Json: %s\n\n", teste);
+
+
+    parseJson(dicionario2, teste);
+    for(int i = 0; i< dicionario2->qtdItens;i++){
+        printf("\nChave: - %s - \n valor: - %s -\n\n", dicionario2->item[i].chave, dicionario2->item[i].valor );
+    }
 
     return 0;
 }
