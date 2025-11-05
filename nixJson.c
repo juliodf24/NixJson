@@ -119,14 +119,19 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
         if(caractere == '}'){
             if(i == (stringSize-1)){
                 adicionarItem(nixJson->dicionario, chave, valor);
-                limparPalavra(chave);
-                limparPalavra(valor);
+                limparPalavra(&chave);
+                limparPalavra(&valor);
                 continue;
             };
             chaves.itensFechado++;
         }
 
         if(caractere == '['){
+            colchetes.itensAbertos++;
+        }
+
+        if(caractere == '['){
+            colchetes.itensFechado++;
         }
 
 
