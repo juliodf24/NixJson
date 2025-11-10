@@ -9,7 +9,6 @@
 typedef struct NixJson {
     DICIONARIO* dicionario;   
     char* stringJson;      
-    int indiceTemp;  
 } NIXJSON;
 
 
@@ -23,10 +22,10 @@ void NixJson_readJson(NIXJSON* nixJson,char* path);
 NIXJSON* NixJson_parseJson(NIXJSON* nixJson);
 
 // pega um item em uma array
-NIXJSON* NixJson_GetItemArray(NIXJSON* nixJson, int index);
+NIXJSON* NixJson_GetItemArray(char* stringJson, int index);
 
 // // pega o valor de uma chave 
-NIXJSON* NixJson_GetObjectItem(NIXJSON* nixJson, const char * chave);
+char* NixJson_GetObjectItem(NIXJSON* nixJson, char * chave);
 
 // retorna a quantidade de itens na array
 NIXJSON* NixJson_GetArraySize(NIXJSON* nixJson);
@@ -37,6 +36,7 @@ void NixJson_free(NIXJSON* nixJson);
 
 /* -------- feramentas --------- */
 int charcatmalloc(char caractere, char** palavra);
+
 
 
 typedef struct conjunto{

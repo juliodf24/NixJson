@@ -7,9 +7,11 @@ int main(void){
     NIXJSON* json = NixJson_create();
     NixJson_readJson(json, "teste.json");
     NIXJSON* primeiraCamada =  NixJson_parseJson(json);
-    for(int i = 0; i < primeiraCamada->dicionario->qtdItens;i++){
-        printf("Chave: %s   Valor: %s\n", primeiraCamada->dicionario->item[i].chave, primeiraCamada->dicionario->item[i].valor);
-    }
+    NixJson_free(json);
 
+    NIXJSON* segundaCamada = NixJson_GetItemArray(NixJson_GetObjectItem(primeiraCamada, "perguntas"), 0);
+    NixJson_free(primeiraCamada);
+
+    printf("Resposta: %s\n",NixJson_GetObjectItem(segundaCamada, "dica"));
     return 0;
 }

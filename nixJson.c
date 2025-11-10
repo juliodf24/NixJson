@@ -21,7 +21,6 @@ NIXJSON* NixJson_create() {
     nixJson->dicionario->qtdItens = 0;
     nixJson->dicionario->item = NULL;
     nixJson->stringJson = NULL;
-    nixJson->indiceTemp = NULL;
 
     return nixJson;
 }
@@ -76,6 +75,9 @@ int charcatmalloc(char caractere, char** palavra) {
 }
 
 
+
+
+
 int removeWhitespace(char* str){
     int stringSize = 0;
     char *origem = str;
@@ -114,12 +116,14 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
     limparPalavra(&valor);
     int gravando = 0;
     int gravarValor = 0;
-    int stringSize = removeWhitespace(nixJson->stringJson);
+    NIXJSON* result = NixJson_create();
+    result->stringJson = strdup(nixJson->stringJson);
+    int stringSize = removeWhitespace(result->stringJson);
 
-    printf("\njson: %s\n", nixJson->stringJson);
+    // printf("\njson: %s\n", nixJson->stringJson);
 
     for(int i = 0; i < stringSize; i++){
-        char caractere = nixJson->stringJson[i];
+        char caractere = result->stringJson[i];
 
         if(caractere == '{'){
             if(i == 0) continue;
@@ -128,7 +132,7 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
 
         if(caractere == '}'){
             if(i == (stringSize-1)){
-                adicionarItem(nixJson->dicionario, chave, valor);
+                adicionarItem(result->dicionario, chave, valor);
                 limparPalavra(&chave);
                 limparPalavra(&valor);
                 continue;
@@ -170,7 +174,7 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
                 if(colchetes.itensAbertos == colchetes.itensFechado){
                     gravarValor = 0;
                     gravando = 0;
-                    adicionarItem(nixJson->dicionario, chave, valor);
+                    adicionarItem(result->dicionario, chave, valor);
                     limparPalavra(&chave);
                     limparPalavra(&valor);
                 }
@@ -188,11 +192,11 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
 
 
     }
-    return nixJson;
+    return result;
 }
 
 
-NIXJSON* NixJson_GetItemArray(NIXJSON* nixJson, int index){
+NIXJSON* NixJson_GetItemArray(char* stringJson, int index){
     char* chave = NULL;
     char* valor = NULL;
     limparPalavra(&chave);
@@ -200,7 +204,18 @@ NIXJSON* NixJson_GetItemArray(NIXJSON* nixJson, int index){
     int gravandoValor = 0;
     int gravando = 0;
     int contador = 48;
+    NIXJSON* nixJson = NixJson_create();
+    nixJson->stringJson = strdup(stringJson);
+    if (!nixJson->stringJson) {
+        perror("Erro ao duplicar stringJson");
+        exit(1);
+    }
     int stringSize = removeWhitespace(nixJson->stringJson);
+
+    if(stringJson[0] != '[' && stringJson[stringSize] != ']'){
+        perror("O item não é um array. Verifique se o valor inicia e termina com []. Caso utilize {}, use a função NixJson_parseJson.");
+        exit(1);
+    }
 
     for(int i = 0; i < stringSize; i++){
         char caractere = nixJson->stringJson[i];
@@ -240,18 +255,50 @@ NIXJSON* NixJson_GetItemArray(NIXJSON* nixJson, int index){
 
         if(gravando){
             if(gravandoValor){
-                adicionarCaractereNaPalavra(caractere, &valor);
+                charcatmalloc(caractere, &valor);
             }
         }
     }
-    printf("qtdItens: %d\n", nixJson->dicionario->qtdItens);
+    // printf("qtdItens: %d\n", nixJson->dicionario->qtdItens);
+    if(index >= nixJson->dicionario->qtdItens){
+        perror("index Não encontrado (NixJson_GetItemArray)");
+        exit(1);
+    }
+    // printf("palavra: %s\n", nixJson->dicionario->item[index].valor);
+    NIXJSON* result = NixJson_create();
+    result->stringJson = strdup(nixJson->dicionario->item[index].valor);
+    NixJson_free(nixJson);
+    return NixJson_parseJson(result);
+    // resultado->stringJson = strdup(nixJson->dicionario->item[index].valor);
+    // NixJson_free(nixJson);
 
 }
 
-NIXJSON* NixJson_GetObjectItem(NIXJSON* nixJson, const char * chave){
+char* NixJson_GetObjectItem(NIXJSON* nixJson, char * chave){
     int indice = buscarItem(nixJson->dicionario, chave);
-    NIXJSON* resultado = NixJson_create();
-    resultado->indiceTemp = indice;
-    
+    int stringSize = strlen(nixJson->dicionario->item[indice].valor);
+    char* result = malloc(stringSize + 1);
+    strncpy(result, nixJson->dicionario->item[indice].valor, stringSize);
+    result[stringSize] = '\0';
+    return result;
 }
+
+void NixJson_free(NIXJSON* nixJson) {
+    if (!nixJson) return;
+
+    if (nixJson->dicionario) {
+        if (nixJson->dicionario->item) {
+            for (int i = 0; i < nixJson->dicionario->qtdItens; i++) {
+                free(nixJson->dicionario->item[i].chave);
+                free(nixJson->dicionario->item[i].valor);
+            }
+            free(nixJson->dicionario->item);
+        }
+        free(nixJson->dicionario);
+    }
+
+    free(nixJson->stringJson);
+    free(nixJson);
+}
+
 
