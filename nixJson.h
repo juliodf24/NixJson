@@ -8,7 +8,8 @@
 //Representa um objeto JSON carregado em memória.
 typedef struct NixJson {
     DICIONARIO* dicionario;   
-    char* stringJson;        
+    char* stringJson;      
+    int indiceTemp;  
 } NIXJSON;
 
 
@@ -25,7 +26,7 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson);
 NIXJSON* NixJson_GetItemArray(NIXJSON* nixJson, int index);
 
 // // pega o valor de uma chave 
-// NIXJSON* NixJson_GetObjectItem(NIXJSON* nixJson, const char * chave);
+NIXJSON* NixJson_GetObjectItem(NIXJSON* nixJson, const char * chave);
 
 // retorna a quantidade de itens na array
 NIXJSON* NixJson_GetArraySize(NIXJSON* nixJson);
@@ -35,7 +36,7 @@ void NixJson_free(NIXJSON* nixJson);
 
 
 /* -------- feramentas --------- */
-int charcatmalloc(char caractere, char* palavra);
+int charcatmalloc(char caractere, char** palavra);
 
 
 typedef struct conjunto{

@@ -15,3 +15,11 @@ void adicionarItem(DICIONARIO* dicionario, const char* chave, const char* valor)
     dicionario->item[dicionario->qtdItens - 1].valor = strdup(valor);
     // printf("\nValor Adicionado: Chave: %s, Valor: %s\n", dicionario->item[dicionario->qtdItens - 1].chave, dicionario->item[dicionario->qtdItens - 1].valor);
 }
+
+int buscarItem(DICIONARIO* dicionario,char chave){
+    for(int i = 0; i< dicionario->qtdItens; i++){
+        if(strcmp(dicionario->item[i].chave, chave)){
+            return i;
+        }
+    }
+}

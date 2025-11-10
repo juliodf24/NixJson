@@ -21,6 +21,7 @@ NIXJSON* NixJson_create() {
     nixJson->dicionario->qtdItens = 0;
     nixJson->dicionario->item = NULL;
     nixJson->stringJson = NULL;
+    nixJson->indiceTemp = NULL;
 
     return nixJson;
 }
@@ -48,25 +49,32 @@ void NixJson_readJson(NIXJSON* nixJson, char* path) {
     fclose(f);
 }
 
-int charcatmalloc(char caractere, char* palavra){
-    if(palavra == NULL){
+int charcatmalloc(char caractere, char** palavra) {
+
+    if (*palavra == NULL) {
         perror("falha ao obter palavra (charcatmalloc)");
         exit(1);
-    } 
+    }
 
-    size_t tamanhoPalavra = strlen(palavra);
-    palavra = realloc(palavra, tamanhoPalavra + 2);
-
-    palavra[tamanhoPalavra] = caractere;
-    palavra[tamanhoPalavra+1] = '\0';
-    
-    if(strlen(palavra) != tamanhoPalavra + 1){
+    size_t tamanhoPalavra = strlen(*palavra);
+    char* temp = realloc(*palavra, tamanhoPalavra + 2);
+    if (temp == NULL) {
         perror("falha ao alocar memoria (charcatmalloc)");
         exit(1);
-    };
+    }
+
+    *palavra = temp;
+    (*palavra)[tamanhoPalavra] = caractere;
+    (*palavra)[tamanhoPalavra + 1] = '\0';
+
+    if (strlen(*palavra) != tamanhoPalavra + 1) {
+        perror("erro de tamanho (charcatmalloc)");
+        exit(1);
+    }
 
     return 0;
 }
+
 
 int removeWhitespace(char* str){
     int stringSize = 0;
@@ -104,6 +112,8 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
     char* valor = NULL;
     limparPalavra(&chave);
     limparPalavra(&valor);
+    int gravando = 0;
+    int gravarValor = 0;
     int stringSize = removeWhitespace(nixJson->stringJson);
 
     printf("\njson: %s\n", nixJson->stringJson);
@@ -128,15 +138,120 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
 
         if(caractere == '['){
             colchetes.itensAbertos++;
+            if(!gravando){
+                gravando = 1;
+            }
         }
 
-        if(caractere == '['){
+        if(caractere == ']'){
             colchetes.itensFechado++;
+        }
+
+        if(caractere == '"'){
+            if(gravando){
+                if(colchetes.itensAbertos == colchetes.itensFechado){
+                    gravando = 0;
+                    continue;
+                }
+            } else {
+                gravando = 1;
+                continue;
+            }
+        }
+
+        if(caractere == ':'){
+            if(!gravarValor){
+                gravarValor = 1;
+            }
+        }
+
+        if(caractere == ','){
+            if(gravarValor){
+                if(colchetes.itensAbertos == colchetes.itensFechado){
+                    gravarValor = 0;
+                    gravando = 0;
+                    adicionarItem(nixJson->dicionario, chave, valor);
+                    limparPalavra(&chave);
+                    limparPalavra(&valor);
+                }
+            } else {
+                continue;
+            }
+        }
+        if(gravando){
+            if(gravarValor){
+                charcatmalloc(caractere, &valor);
+            } else{
+                charcatmalloc(caractere, &chave);
+            }
         }
 
 
     }
+    return nixJson;
 }
 
 
+NIXJSON* NixJson_GetItemArray(NIXJSON* nixJson, int index){
+    char* chave = NULL;
+    char* valor = NULL;
+    limparPalavra(&chave);
+    limparPalavra(&valor);
+    int gravandoValor = 0;
+    int gravando = 0;
+    int contador = 48;
+    int stringSize = removeWhitespace(nixJson->stringJson);
+
+    for(int i = 0; i < stringSize; i++){
+        char caractere = nixJson->stringJson[i];
+
+        if(caractere == '{'){
+            if( (i==0 || nixJson->stringJson[i-1] == '[' || (nixJson->stringJson[i-1] == ',' && nixJson->stringJson[i-2] == '}')) && gravandoValor == 0){
+                gravando = 1;
+                contador++;
+                charcatmalloc(contador, &chave);
+                gravandoValor = 1;
+            }
+        }
+
+        if(caractere == ','){
+            if(nixJson->stringJson[i-1] == '}' && nixJson->stringJson[i+1] == '{'){
+                gravando = 0;
+                adicionarItem(nixJson->dicionario, chave, valor);
+                limparPalavra(&chave);
+                limparPalavra(&valor);
+                gravandoValor = 0;
+                continue;
+            }
+        }
+
+        if(caractere == '}'){
+            if(nixJson->stringJson[i+1] == ']'){
+                gravando = 0;
+                charcatmalloc(caractere, &valor);
+                adicionarItem(nixJson->dicionario, chave, valor);
+                limparPalavra(&chave);
+                limparPalavra(&valor);
+                gravandoValor = 0;
+                contador++;
+                continue;
+            }
+        }
+
+        if(gravando){
+            if(gravandoValor){
+                adicionarCaractereNaPalavra(caractere, &valor);
+            }
+        }
+    }
+    printf("qtdItens: %d\n", nixJson->dicionario->qtdItens);
+
+}
+
+NIXJSON* NixJson_GetObjectItem(NIXJSON* nixJson, const char * chave){
+    int indice = buscarItem(nixJson->dicionario, chave);
+    NIXJSON* resultado = NixJson_create();
+    resultado->indiceTemp = indice;
+    
+}
 
