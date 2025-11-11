@@ -21,8 +21,11 @@ int main(void){
     char* alternativas = NixJson_GetObjectItem(segundaCamada, "alternativa");
 
     int tamanhoArray2 = NixJson_GetArraySize(alternativas);
+    printf("string array: %s\n", alternativas);
     printf("tamanho array: %d\n", tamanhoArray2);
 
-    printf("Resposta: %s\n", alternativas );
+    NIXJSON* alternativa = NixJson_GetArrayItem(alternativas, 0);
+
+    // printf("Resposta: %s\n",  );
     return 0;
 }

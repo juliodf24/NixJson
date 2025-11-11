@@ -3,7 +3,7 @@
   "perguntas": [
         {
           "enunciado": "Qual é o país conhecido como o berço do futebol? 💂🏻",
-          "alternativa": ["Brasil", ["Inglaterra", "teste"],{ "Alemanha": 2}, "Espanha"],
+          "alternativa": ["Brasil", "Inglaterra", "teste", "Alemanha", "Espanha"],
           "resposta":"1",
           "dica": "O esporte surgiu no século XIX em uma ilha europeia."
         }
