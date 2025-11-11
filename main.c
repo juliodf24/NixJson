@@ -6,12 +6,23 @@ int main(void){
 
     NIXJSON* json = NixJson_create();
     NixJson_readJson(json, "teste.json");
+
     NIXJSON* primeiraCamada =  NixJson_parseJson(json);
     NixJson_free(json);
 
-    NIXJSON* segundaCamada = NixJson_GetItemArray(NixJson_GetObjectItem(primeiraCamada, "perguntas"), 0);
+    char* perguntas = NixJson_GetObjectItem(primeiraCamada, "perguntas");
+
+    int tamanhoArray = NixJson_GetArraySize(perguntas);
+    printf("tamanho array: %d\n", tamanhoArray);
+
+    NIXJSON* segundaCamada = NixJson_GetArrayItem(perguntas, 0);
     NixJson_free(primeiraCamada);
 
-    printf("Resposta: %s\n",NixJson_GetObjectItem(segundaCamada, "dica"));
+    char* alternativas = NixJson_GetObjectItem(segundaCamada, "alternativa");
+
+    int tamanhoArray2 = NixJson_GetArraySize(alternativas);
+    printf("tamanho array: %d\n", tamanhoArray2);
+
+    printf("Resposta: %s\n", alternativas );
     return 0;
 }

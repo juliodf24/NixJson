@@ -1,15 +1,14 @@
 ![Logo do NixJSON](./img/nixJson.png)
 ---
 **NixJSON** é uma biblioteca minimalista em **C** para leitura e parsing de arquivos **JSON**, projetada para ser leve, rápida e fácil de integrar.
+Apenas para fins didaticos. Não aborda todos os tipos de json.
 ---
 
 ## 🚀 Características
 - Leitura e parsing de JSON puro em C
 - Estrutura de dados simples e eficiente
-- Sem dependências externas
 - Código limpo e bem documentado
 - Suporte a valores aninhados e arrays
-
 ---
 
 ## 📦 Instalação

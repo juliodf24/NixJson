@@ -194,9 +194,18 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
     }
     return result;
 }
+int NixJson_GetArraySize(char* stringJson){
+    NIXJSON* array = NixJson_GetArrayItem(stringJson, 0);
+    if(array == NULL){
+        return 0;
+    }
+    int result = array->dicionario->qtdItens;
+    NixJson_free(array);
+    return result;
+}
 
 
-NIXJSON* NixJson_GetItemArray(char* stringJson, int index){
+NIXJSON* NixJson_GetArrayItem(char* stringJson, int index){
     char* chave = NULL;
     char* valor = NULL;
     limparPalavra(&chave);
@@ -213,7 +222,9 @@ NIXJSON* NixJson_GetItemArray(char* stringJson, int index){
     int stringSize = removeWhitespace(nixJson->stringJson);
 
     if(stringJson[0] != '[' && stringJson[stringSize] != ']'){
+        fprintf(stderr, "\033[1;31m"); 
         perror("O item não é um array. Verifique se o valor inicia e termina com []. Caso utilize {}, use a função NixJson_parseJson.");
+        fprintf(stderr, "\033[0m"); 
         exit(1);
     }
 
@@ -261,8 +272,10 @@ NIXJSON* NixJson_GetItemArray(char* stringJson, int index){
     }
     // printf("qtdItens: %d\n", nixJson->dicionario->qtdItens);
     if(index >= nixJson->dicionario->qtdItens){
-        perror("index Não encontrado (NixJson_GetItemArray)");
-        exit(1);
+        fprintf(stderr, "\033[1;31m"); 
+        perror("index Não encontrado (NixJson_GetArrayItem)");
+        fprintf(stderr, "\033[0m"); 
+        return NULL;
     }
     // printf("palavra: %s\n", nixJson->dicionario->item[index].valor);
     NIXJSON* result = NixJson_create();

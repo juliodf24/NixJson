@@ -22,13 +22,13 @@ void NixJson_readJson(NIXJSON* nixJson,char* path);
 NIXJSON* NixJson_parseJson(NIXJSON* nixJson);
 
 // pega um item em uma array
-NIXJSON* NixJson_GetItemArray(char* stringJson, int index);
+NIXJSON* NixJson_GetArrayItem(char* stringJson, int index);
 
-// // pega o valor de uma chave 
+//pega o valor de uma chave 
 char* NixJson_GetObjectItem(NIXJSON* nixJson, char * chave);
 
 // retorna a quantidade de itens na array
-NIXJSON* NixJson_GetArraySize(NIXJSON* nixJson);
+int NixJson_GetArraySize(char* stringJson);
 
 //Libera toda a memória associada.
 void NixJson_free(NIXJSON* nixJson);
