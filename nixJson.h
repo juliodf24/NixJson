@@ -12,25 +12,32 @@ typedef struct NixJson {
 } NIXJSON;
 
 
-//Cria uma nova instância de NixJSON.
+/**
+ * @brief Cria um novo NIXJSON.
+ * criar nova estrutura
+ * @return Ponteiro para estrutura NIXJSON inicializada.
+ */
 NIXJSON* NixJson_create();
 
-//lê um arquivo json
+///lê um arquivo json
+/**
+ * lê um arquivo Json
+ */
 void NixJson_readJson(NIXJSON* nixJson,char* path);
 
-//Lê e interpreta um arquivo JSON.
+///Lê e interpreta um arquivo JSON.
 NIXJSON* NixJson_parseJson(NIXJSON* nixJson);
 
-// pega um item em uma array
+/// pega um item em uma array
 NIXJSON* NixJson_GetArrayItem(char* stringJson, int index);
 
-//pega o valor de uma chave 
+///pega o valor de uma chave 
 char* NixJson_GetObjectItem(NIXJSON* nixJson, char * chave);
 
-// retorna a quantidade de itens na array
+/// retorna a quantidade de itens na array
 int NixJson_GetArraySize(char* stringJson);
 
-//Libera toda a memória associada.
+///Libera toda a memória associada.
 void NixJson_free(NIXJSON* nixJson);
 
 

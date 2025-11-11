@@ -194,9 +194,10 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
     }
     return result;
 }
+
 int NixJson_GetArraySize(char* stringJson){
     NIXJSON* array = NixJson_GetArrayItem(stringJson, 0);
-    printf("Na array size: %d", array->dicionario->qtdItens);
+    printf("Na array size: %s", array->stringJson);
     int result = array->dicionario->qtdItens;
     NixJson_free(array);
     return result;
