@@ -54,7 +54,7 @@ include(FetchContent)
 FetchContent_Declare(
   nixjson
   GIT_REPOSITORY https://github.com/juliodf24/NixJson.git
-  GIT_TAG main
+  GIT_TAG (versão)
 )
 FetchContent_MakeAvailable(nixjson)
 
