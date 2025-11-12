@@ -15,4 +15,6 @@ typedef struct dicionario DICIONARIO;
 
 void adicionarItem(DICIONARIO* dicionario, const char* chave, const char* valor);
 
+int buscarItem(DICIONARIO* dicionario,char* chave);
+
 #endif
