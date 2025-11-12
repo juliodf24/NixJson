@@ -8,7 +8,8 @@
 //Representa um objeto JSON carregado em memória.
 typedef struct NixJson {
     DICIONARIO* dicionario;   
-    char* stringJson;      
+    char* stringJson;  
+    char* string; 
 } NIXJSON;
 
 

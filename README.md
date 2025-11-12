@@ -29,7 +29,7 @@ nixjson/
 Clone o repositório e compile os arquivos `.c` normalmente:
 
 ```bash
-git clone https://github.com/seu-usuario/nixjson.git
+git clone https://github.com/juliodf24/NixJson.git
 cd nixjson
 mkdir build && cd build
 cmake ..
@@ -53,7 +53,7 @@ Se quiser incluir **NixJson** remotamente em seu repositório, adicione ao seu `
 include(FetchContent)
 FetchContent_Declare(
   nixjson
-  GIT_REPOSITORY https://github.com/seu-usuario/nixjson.git
+  GIT_REPOSITORY https://github.com/juliodf24/NixJson.git
   GIT_TAG main
 )
 FetchContent_MakeAvailable(nixjson)

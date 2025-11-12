@@ -21,6 +21,7 @@ NIXJSON* NixJson_create() {
     nixJson->dicionario->qtdItens = 0;
     nixJson->dicionario->item = NULL;
     nixJson->stringJson = NULL;
+    nixJson->string = NULL;
 
     return nixJson;
 }
@@ -197,7 +198,6 @@ NIXJSON* NixJson_parseJson(NIXJSON* nixJson){
 
 int NixJson_GetArraySize(char* stringJson){
     NIXJSON* array = NixJson_GetArrayItem(stringJson, -2);
-    printf("Na array size: %s", array->stringJson);
     int result = array->dicionario->qtdItens;
     NixJson_free(array);
     return result;
@@ -317,12 +317,14 @@ NIXJSON* NixJson_GetArrayItem(char* stringJson, int index){
         result->dicionario->qtdItens = nixJson->dicionario->qtdItens;
     } else {
         result->stringJson = strdup(nixJson->dicionario->item[index].valor);
+        printf("resolvendo: %s\n", result->stringJson);
     }
     NixJson_free(nixJson);
     if(index == -2){
         return result;
     }
     return NixJson_parseJson(result);
+    // return result;
     // resultado->stringJson = strdup(nixJson->dicionario->item[index].valor);
     // NixJson_free(nixJson);
 

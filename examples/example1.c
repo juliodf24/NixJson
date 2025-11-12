@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "nixJson.h"
 
 int main(void){
     printf("\nInicializado\n");
 
     NIXJSON* json = NixJson_create();
-    NixJson_readJson(json, "teste.json");
+    NixJson_readJson(json, "data.json");
 
     NIXJSON* primeiraCamada =  NixJson_parseJson(json);
     NixJson_free(json);
@@ -23,9 +24,11 @@ int main(void){
     int tamanhoArray2 = NixJson_GetArraySize(alternativas);
     printf("string array: %s\n", alternativas);
     printf("tamanho array: %d\n", tamanhoArray2);
-
+    
+    
     NIXJSON* alternativa = NixJson_GetArrayItem(alternativas, 0);
+    free(alternativas);
+    printf("Resposta: %s\n",  alternativa->stringJson);
 
-    // printf("Resposta: %s\n",  );
     return 0;
 }
