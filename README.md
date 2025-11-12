@@ -11,59 +11,62 @@ Apenas para fins didaticos. Não aborda todos os tipos de json.
 - Suporte a valores aninhados e arrays
 ---
 
+## 🧱 Estrutura do projeto
+
+```
+nixjson/
+├── include/           # Headers públicos
+├── src/               # Implementação da biblioteca
+├── examples/          # Exemplos de uso
+│   ├── example1.c
+│   └── data.json
+├── CMakeLists.txt     # Configuração principal
+└── README.md
+```
+
+---
 ## 📦 Instalação
 Clone o repositório e compile os arquivos `.c` normalmente:
 
 ```bash
-git clone https://github.com/seuusuario/nixjson.git
+git clone https://github.com/seu-usuario/nixjson.git
 cd nixjson
-gcc -o exemplo exemplo.c nixjson.c
+mkdir build && cd build
+cmake ..
+make
+```
+
+Resultado:
+```
+libnixjson.a     # biblioteca estática
+libnixjson.so    # biblioteca compartilhada
+nixjson_example  # exemplo de uso
 ```
 
 ---
 
-## 🧩 Exemplo de uso
+## 🧠 Usando em outro projeto com CMake
 
-```c
-#include "nixjson.h"
+Se quiser incluir **NixJson** remotamente em seu repositório, adicione ao seu `CMakeLists.txt`:
 
-int main() {
-    JSON *data = json_read("dados.json");
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+  nixjson
+  GIT_REPOSITORY https://github.com/seu-usuario/nixjson.git
+  GIT_TAG main
+)
+FetchContent_MakeAvailable(nixjson)
 
-    if (data) {
-        const char *nome = json_get_string(data, "usuario.nome");
-        printf("Nome: %s\n", nome);
-
-        json_free(data);
-    }
-
-    return 0;
-}
+target_link_libraries(seu_executavel PRIVATE nixjson_static)
 ```
 
----
-
-## 🛠 Estrutura do Projeto
-
-```
-📂 nixjson/
- ├── nixjson.c
- ├── nixjson.h
- ├── exemplo.c
- ├── README.md
- └── LICENSE
-```
-
----
-
-## ⚖️ Licença
-
-Este projeto é licenciado sob a licença **MIT** — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+>  Assim, o CMake baixa automaticamente a lib e a compila junto com seu projeto.
 
 ---
 
 ## 💡 Sobre
 
-Criado por **Júlio César** — inspirado em bibliotecas minimalistas e de alta performance para C.
+Criado por **Júlio César**.
 
-> *NixJSON: JSON parsing no estilo C — simples, direto e eficiente.*
+> *NixJSON: JSON parsing no estilo C — simples e direto.*
