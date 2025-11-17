@@ -58,7 +58,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nixjson)
 
-target_link_libraries(seu_executavel PRIVATE nixjson_static)
+target_link_libraries(seu_executavel PRIVATE nixjson)
 ```
 
 >  Assim, o CMake baixa automaticamente a lib e a compila junto com seu projeto.
