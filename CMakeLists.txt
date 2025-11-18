@@ -7,5 +7,5 @@ add_library(nixjson STATIC ${SOURCES})
 
 target_include_directories(nixjson PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
-add_executable(nixjson_example examples/example1.c)
-target_link_libraries(nixjson_example PRIVATE nixjson)
+add_executable(nixjson_example2 examples/example2.c)
+target_link_libraries(nixjson_example2 PRIVATE nixjson)
