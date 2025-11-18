@@ -6,7 +6,7 @@ int main(void){
     printf("\nInicializado\n");
 
     NIXJSON* json = NixJson_create();
-    NixJson_readJson(json, "data.json");
+    NixJson_readJson(json, "data2.json");
 
     NIXJSON* primeiraCamada =  NixJson_parseJson(json);
     NixJson_free(json);

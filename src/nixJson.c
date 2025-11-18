@@ -370,7 +370,7 @@ void NixJson_free(NIXJSON* nixJson) {
 }
 
 void NixJson_version(){
-    printf("Verção do NixJson: V2.0.0 BETA");
+    printf("Verção do NixJson: V1.1.1");
 }
 
 
