@@ -369,4 +369,9 @@ void NixJson_free(NIXJSON* nixJson) {
     free(nixJson);
 }
 
+void NixJson_version(){
+    printf("Verção do NixJson: V2.0.0 BETA");
+}
+
+
 
