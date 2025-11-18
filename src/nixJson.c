@@ -216,6 +216,9 @@ NIXJSON* NixJson_GetArrayItem(char* stringJson, int index){
     CONJUNTO colchetes;
     colchetes.itensAbertos = 0;
     colchetes.itensFechado = 0;
+    CONJUNTO chaves;
+    chaves.itensAbertos = 0;
+    chaves.itensFechado = 0;
     NIXJSON* nixJson = NixJson_create();
     nixJson->stringJson = strdup(stringJson);
     if (!nixJson->stringJson) {
@@ -264,29 +267,38 @@ NIXJSON* NixJson_GetArrayItem(char* stringJson, int index){
         }
         //////
         // tipo 2 [{},{},{}]
-
+        // printf("caractare: %c    gravando = %d\n",caractere, gravando );
         if(caractere == '{'){
-            if( (i==0 || nixJson->stringJson[i-1] == '[' || (nixJson->stringJson[i-1] == ',' && nixJson->stringJson[i-2] == '}')) && gravandoValor == 0){
-                gravando = 1;
-                contador++;
-                charcatmalloc(contador, &chave);
-                gravandoValor = 1;
-            }
+                if(i==0 || (chaves.itensAbertos == chaves.itensFechado) && gravando == 0){
+                    gravando = 1;
+                    contador++;
+                    charcatmalloc(contador, &chave);
+                    gravandoValor = 1;
+                }
+                chaves.itensAbertos++;
+            // if( (i==0 || nixJson->stringJson[i-1] == '[' || (nixJson->stringJson[i-1] == ',' && nixJson->stringJson[i-2] == '}')) && gravandoValor == 0){
+            //     gravando = 1;
+            //     contador++;
+            //     charcatmalloc(contador, &chave);
+            //     gravandoValor = 1;
+            // }
         }
 
         if(caractere == ','){
-            if(nixJson->stringJson[i-1] == '}' && nixJson->stringJson[i+1] == '{'){
+            if((nixJson->stringJson[i-1] == '}' && nixJson->stringJson[i+1] == '{') && chaves.itensAbertos == chaves.itensFechado){
                 gravando = 0;
-                adicionarItem(nixJson->dicionario, chave, valor);
-                limparPalavra(&chave);
-                limparPalavra(&valor);
+                // printf("Adicionado: chave: (%s) valor: (%s)", chave, valor);
+                // adicionarItem(nixJson->dicionario, chave, valor);
+                // limparPalavra(&chave);
+                // limparPalavra(&valor);
                 gravandoValor = 0;
                 continue;
             }
         }
 
         if(caractere == '}'){
-            if(nixJson->stringJson[i+1] == ']'){
+            chaves.itensFechado++;
+            if((nixJson->stringJson[i+1] == ']' || nixJson->stringJson[i+1] == ',') && chaves.itensAbertos == chaves.itensFechado){
                 gravando = 0;
                 charcatmalloc(caractere, &valor);
                 adicionarItem(nixJson->dicionario, chave, valor);
@@ -356,5 +368,10 @@ void NixJson_free(NIXJSON* nixJson) {
     free(nixJson->stringJson);
     free(nixJson);
 }
+
+void NixJson_version(){
+    printf("Verção do NixJson: V1.1.1");
+}
+
 
 

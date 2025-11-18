@@ -42,6 +42,8 @@ int NixJson_GetArraySize(char* stringJson);
 void NixJson_free(NIXJSON* nixJson);
 
 
+void NixJson_version();
+
 /* -------- feramentas --------- */
 int charcatmalloc(char caractere, char** palavra);
 

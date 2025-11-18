@@ -1,0 +1,38 @@
+{
+  "niveis": [
+    {
+      "nivel": 1,
+      "perguntas": [
+        {
+          "enunciado": "Qual é o país conhecido como o berço do futebol? 💂🏻",
+          "alternativa": ["Brasil", "Inglaterra", "Alemanha", "Espanha"],
+          "resposta": 1,
+          "dica": "O esporte surgiu no século XIX em uma ilha europeia."
+        },
+        {
+          "enunciado": "Quantos jogadores um time de futebol tem em campo 🏃🏼‍♂️?",
+          "alternativa": ["10", "11", "12", "9"],
+          "resposta": 1,
+          "dica": "Inclui o goleiro nessa contagem."
+        }
+      ]
+    },
+    {
+      "nivel": 2,
+      "perguntas": [
+        {
+          "enunciado": "Qual é o maior estádio do Brasil? 🏟️",
+          "alternativa": ["Morumbi", "Mineirão", "Maracanã", "Beira-Rio"],
+          "resposta": 2,
+          "dica": "Fica no Rio de Janeiro 🏖️."
+        },
+        {
+          "enunciado": "Em que país foi realizada a Copa do Mundo de 2018 🐻‍❄️?",
+          "alternativa": ["Brasil", "Alemanha", "Rússia", "Catar"],
+          "resposta": 2,
+          "dica": "A final aconteceu em Moscou🪆."
+        }
+      ]
+    }
+  ]
+}

@@ -4,14 +4,14 @@
 Apenas para fins didaticos. Não aborda todos os tipos de json.
 ---
 
-## 🚀 Características
+## Características
 - Leitura e parsing de JSON puro em C
 - Estrutura de dados simples e eficiente
 - Código limpo e bem documentado
 - Suporte a valores aninhados e arrays
 ---
 
-## 🧱 Estrutura do projeto
+## Estrutura do projeto
 
 ```
 nixjson/
@@ -25,7 +25,7 @@ nixjson/
 ```
 
 ---
-## 📦 Instalação
+## Instalação
 Clone o repositório e compile os arquivos `.c` normalmente:
 
 ```bash
@@ -45,7 +45,7 @@ nixjson_example  # exemplo de uso
 
 ---
 
-## 🧠 Usando em outro projeto com CMake
+## Usando em outro projeto com CMake
 
 Se quiser incluir **NixJson** remotamente em seu repositório, adicione ao seu `CMakeLists.txt`:
 
@@ -65,7 +65,7 @@ target_link_libraries(seu_executavel PRIVATE nixjson)
 
 ---
 
-## 💡 Sobre
+## Sobre
 
 Criado por **Júlio César**.
 
