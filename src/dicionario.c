@@ -23,6 +23,6 @@ int buscarItem(DICIONARIO* dicionario,char* chave){
             return i;
         }
     }
-    perror("valor não encontrado no dicionario (buscarItem Dicionario) ");
+    printf("valor não encontrado no dicionario (buscarItem Dicionario) valor de busca: (%s)\n", chave);
     exit(1);
 }
